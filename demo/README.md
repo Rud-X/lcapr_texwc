@@ -5,7 +5,7 @@ This folder follows a tiny document, [`demo.tex`](demo.tex), through each box of
 The output of every stage is already in [`trace/`](trace/), so you can read along without installing anything. To make it again:
 
 ```bash
-python3 texwc.py --tex demo/demo.tex trace --out demo/trace
+python3 texwc.py --mode libreoffice --tex demo/demo.tex trace --out demo/trace
 ```
 
 ```
@@ -154,7 +154,7 @@ Words per kind:
 93 words  (demo/demo.tex, tokenizer: libreoffice)
 ```
 
-This is the same number that `python3 texwc.py --tex demo/demo.tex count -s -k` prints.
+This is the same number that `python3 texwc.py --mode libreoffice --tex demo/demo.tex count -s -k` prints.
 
 ---
 
@@ -163,7 +163,7 @@ This is the same number that `python3 texwc.py --tex demo/demo.tex count -s -k` 
 With `--docx`, `trace` also runs `DocxExtractor` (`wordcount/docx_extract.py`) on a reference `.docx` and writes stages 3–6 for it (`3_docx_blocks.tsv` …). It then compares the two sides word by word in `7_diff.txt`. The demo has no `.docx`, so this example uses the course template:
 
 ```bash
-python3 texwc.py trace --docx example/LCA_PR.docx --out trace
+python3 texwc.py --mode libreoffice trace --docx example/LCA_PR.docx --out trace
 ```
 
 ```
@@ -184,7 +184,7 @@ Each differing run is labelled `split` (same characters, split into words differ
 ## Try it: change a rule and look again
 
 1. In `wordcount.toml`, set `exclude_kinds = ["header"]` under `[tokenizer.libreoffice]`. This is what MS Word does.
-2. Run `python3 texwc.py --tex demo/demo.tex trace --out demo/trace` again.
+2. Run `python3 texwc.py --mode libreoffice --tex demo/demo.tex trace --out demo/trace` again.
 3. In `4_filter.tsv`, rows 20–23 now say `DROP  kind 'header' not counted`, and `6_count.txt` drops from 93 to 83.
 
 Undo the change afterwards. `git diff demo/trace` shows exactly what a rule change does at every stage.

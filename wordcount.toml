@@ -20,7 +20,7 @@ tex = "example/main.tex"         # paths are relative to this config file
 bib = ""                         # "" = the file(s) named by \\addbibresource / \\bibliography in the tex
 csl = "csl/apa.csl"              # any CSL style file; https://github.com/citation-style-language/styles
 reference_docx = "example/LCA_PR.docx"   # benchmark for `diff` / `calibrate`
-word_reference_count = 2292     # MS Word (on the web) count of the whole reference_docx; compare with `--until "" calibrate`
+word_reference_count = 2281     # desktop MS Word count of the whole reference_docx (Word on the web: 2292); compare with `--until "" calibrate`
 locale = "en-US"                 # CSL locale
 
 # ---------------------------------------------------------------------------
@@ -31,7 +31,7 @@ locale = "en-US"                 # CSL locale
 #   * every other non-empty token counts, also lone symbols like • ℹ / & ≥ . 🡪
 # ---------------------------------------------------------------------------
 [tokenizer]
-mode = "word"                    # "libreoffice" | "word"
+mode = "word_desktop"            # "word_desktop" (desktop MS Word) | "word_web" (Word on the web) | "libreoffice"
 
 [tokenizer.libreoffice]
 extra_separators = "–—"          # LibreOffice: Options > Writer > General > Additional separators
@@ -39,14 +39,25 @@ count_symbol_only_tokens = true  # count tokens without letters/digits ("•", "
 ignore_tokens = []               # regexes for tokens that never count (full match)
 exclude_kinds = []               # LibreOffice counts header/footer text (each variant once)
 
-[tokenizer.word]
+[tokenizer.word_web]
 # Verified against Word on the web (Oct 2026) with example/LCA_PR.docx: 2292 words in total,
 # 1923 for the text before "References". Like LibreOffice, the en dash separates words and is
-# never a word itself ("2026–2027" = 2, a lone "–" = 0). The em dash is assumed to behave the same (not in the example).
+# never a word itself ("2026–2027" = 2, a lone "–" = 0); probe/word_probe.docx shows the same for the em dash.
 extra_separators = "–—"
 count_symbol_only_tokens = true
 ignore_tokens = []
 exclude_kinds = ["header"]       # Word's status bar count ignores headers/footers
+
+[tokenizer.word_desktop]
+# Verified against desktop MS Word (Oct 2026): example/LCA_PR.docx gives 2281 words in total,
+# 1913 before "References". Same as Word on the web, except:
+#   * a lone bullet "•" is not a word (probe/word_probe.docx: "a • b" = 2)
+#   * the narrow no-break space U+202F does not separate words ("Handbook\u202f:general" = 1)
+extra_separators = "–—"
+non_separating_spaces = "\u202f"  # whitespace characters that do not separate words
+count_symbol_only_tokens = true
+ignore_tokens = ["•"]
+exclude_kinds = ["header"]
 
 # ---------------------------------------------------------------------------
 # What is counted. Every extracted text block has a kind:
@@ -113,6 +124,12 @@ title = "References"             # heading printed by \printbibliography without
 kinds = ["bibliography"]
 pattern = '\s+:(?=\s)'
 replace = ":"
+
+# ... and writes a narrow no-break space (U+202F) in "Handbook :general", where no space follows the colon.
+[[tex.replacements]]
+kinds = ["bibliography"]
+pattern = '\s+:(?=\S)'
+replace = "\u202f:"
 
 # Tables: these environments are flattened into one paragraph per cell.
 # value = number of mandatory arguments after \begin{env} (column spec etc.)

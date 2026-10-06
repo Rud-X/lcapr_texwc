@@ -41,9 +41,14 @@ def load_config(path: str | Path) -> Config:
 class Tokenizer:
     def __init__(self, cfg: Config, mode: str | None = None):
         self.mode = mode or cfg["tokenizer"]["mode"]
+        modes = [m for m in cfg["tokenizer"] if m != "mode"]
+        if self.mode not in modes:
+            raise SystemExit(f"unknown tokenizer mode {self.mode!r}; choose one of: {', '.join(modes)}")
         rules = cfg["tokenizer"][self.mode]
         seps = rules.get("extra_separators", "")
         self.sep_re = re.compile(f"[{re.escape(seps)}]") if seps else None
+        joins = rules.get("non_separating_spaces", "")
+        self.split_re = re.compile(f"[^\\S{re.escape(joins)}]+") if joins else None
         self.count_symbols = rules.get("count_symbol_only_tokens", True)
         self.ignore = [re.compile(p) for p in rules.get("ignore_tokens", [])]
         self.exclude_kinds = rules.get("exclude_kinds", [])
@@ -52,7 +57,7 @@ class Tokenizer:
         if self.sep_re:
             text = self.sep_re.sub(" ", text)
         # str.split() splits on all Unicode whitespace (incl. U+00A0, U+202F), but not U+200B
-        tokens = text.split()
+        tokens = text.split() if not self.split_re else [t for t in self.split_re.split(text) if t]
         if not self.count_symbols:
             tokens = [t for t in tokens if re.search(r"\w", t)]
         if self.ignore:

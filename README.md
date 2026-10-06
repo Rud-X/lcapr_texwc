@@ -91,10 +91,11 @@ lo_python = ""        # e.g. 'D:\LibreOffice\program\python.exe'
 The config points at the example in `example/`. It counts the text before the "References" heading (`stop_at_heading` in `wordcount.toml`):
 
 ```bash
-python3 texwc.py count                     # → 1923 words  (example/main.tex, tokenizer: word)
+python3 texwc.py count                     # → 1913 words  (example/main.tex, tokenizer: word_desktop)
 python3 texwc.py count -s --depth 1        # words per top-level section
-python3 texwc.py --until "" count          # the whole document → 2292 words
-python3 texwc.py --mode libreoffice count   # LibreOffice count (adds header/footer text) → 1947 words
+python3 texwc.py --until "" count          # the whole document → 2281 words
+python3 texwc.py --mode word_web count     # Word on the web → 1923 words
+python3 texwc.py --mode libreoffice count  # LibreOffice (adds header/footer text) → 1947 words
 python3 texwc.py diff                      # check against example/LCA_PR.docx
 ```
 
@@ -129,17 +130,24 @@ Global options (put them before the command):
 | `--bib FILE` | The bibliography (overrides `[input] bib`; default: taken from the tex) |
 | `--until HEADING` | Count only the text before that heading (a regex; the heading number is ignored; `""` = everything) |
 | `--csl FILE` | Use a different citation style |
-| `--mode libreoffice` | Use the LibreOffice tokenizer, which also counts header/footer text (default: `word`, verified against Word on the web) |
+| `--mode MODE` | `word_desktop` (default): desktop MS Word. `word_web`: Word on the web. `libreoffice`: LibreOffice Writer, which also counts header/footer text |
 | `--config FILE` | Use a different config file |
 
 ## Counting rules worth knowing
 
-These rules were verified against LibreOffice 25.8:
-- LibreOffice treats en and em dashes as spaces, so `2026–2027` is 2 words.
-- Every other piece of text between spaces counts as a word, including `•`, `/`, `&` and `ℹ`.
-- LibreOffice counts header and footer text, once per header/footer variant. Word does not.
+Choose the mode with `--mode` or `[tokenizer] mode` in `wordcount.toml`. Each mode was verified against its program with `example/LCA_PR.docx` and `probe/word_probe.docx` (desktop Word, Word on the web, LibreOffice 25.8):
 
-Checked against Word on the web with `example/LCA_PR.docx`: Word gives 2292 words for the whole document and 1923 for the text before "References" (the default `word` mode gives the same). Word counts exactly like LibreOffice, except that it leaves out the headers and footers. Its en dashes also separate words.
+| | `word_desktop` (default) | `word_web` | `libreoffice` |
+|---|---|---|---|
+| Program it matches | Desktop MS Word | Word on the web | LibreOffice Writer |
+| Header/footer text | Not counted | Not counted | Counted, once per variant (twice in the example) |
+| En/em dash (`2026–2027`, lone `–`) | Splits words (2); a lone dash is not a word | Same | Same |
+| Lone bullet `•` | **Not counted** | Counted | Counted |
+| Narrow no-break space U+202F (Zotero's `Handbook :general`) | **Joins words** (1) | Splits words (2) | Splits words (2) |
+| Other lone symbols (`&`, `/`, `≥`, `ℹ`, `…`) | Counted | Counted | Counted |
+| Example: before References / whole document | 1913 / 2281 | 1923 / 2292 | 1947 / 2316 |
+
+In all modes:
 - Heading numbers, caption labels (`Figure 1:`) and the table of contents all count, because they are literal text in a `.docx`.
 
 # Author
