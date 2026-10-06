@@ -1,0 +1,15 @@
+Words per section:
+      11  (front matter)
+      35  1. Introduction
+      27    1.1 Functional unit
+      10  2. Conclusion
+      10  (headers/footers)
+Words per kind:
+      47  para
+      11  toc
+      10  header
+       8  table
+       7  heading
+       6  guidance
+       4  caption
+93 words  (demo/demo.tex, tokenizer: libreoffice)

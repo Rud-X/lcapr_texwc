@@ -67,26 +67,39 @@ def strip_number(heading: str) -> str:
     return re.sub(r"^\s*(?:\d+(?:\.\d+)*\.?|[A-Z](?:\.\d+)*\.)\s+", "", heading).strip()
 
 
-def apply_filters(blocks: list[Block], cfg: Config, tokenize: Tokenizer) -> list[Block]:
-    """Tokenize the blocks that pass the [count] rules; return only those."""
+def apply_filters(blocks: list[Block], cfg: Config, tokenize: Tokenizer,
+                  log: list | None = None) -> list[Block]:
+    """Tokenize the blocks that pass the [count] rules; return only those.
+    `log` (optional) receives (block, reason) for every block, kept or dropped."""
     kinds = set(cfg["count"]["kinds"]) - set(tokenize.exclude_kinds)
     excl = [re.compile(p) for p in cfg["count"].get("exclude_sections", [])]
     stop = cfg["count"].get("stop_at_heading", "")
     stop_re = re.compile(stop) if stop else None
     stopped = False
     kept = []
+
+    def note(b: Block, reason: str):
+        if log is not None:
+            log.append((b, reason))
+
     for b in blocks:
         # everything from the first matching heading on is dropped; page headers/footers
         # are not part of the text flow and stay governed by `kinds`
         if stop_re and b.kind == "heading" and stop_re.fullmatch(strip_number(b.text)):
             stopped = True
         if stopped and b.kind != "header":
+            note(b, f"after stop heading {stop!r}")
             continue
         if b.kind not in kinds:
+            note(b, f"kind {b.kind!r} not counted")
             continue
-        if any(p.search(title) for p in excl for title in b.section):
+        if (p := next((p for p in excl for title in b.section if p.search(title)), None)):
+            note(b, f"excluded section {p.pattern!r}")
             continue
         b.tokens = tokenize(b.text)
         if b.tokens:
             kept.append(b)
+            note(b, "kept")
+        else:
+            note(b, "no tokens")
     return kept

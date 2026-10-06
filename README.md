@@ -33,19 +33,24 @@ flowchart LR
 
 Each text block has a *kind* (`heading`, `para`, `table`, `caption`, `guidance`, `toc`, `bibliography`, `footnote`, `header`). The config uses these kinds to decide what is counted.
 
+To see these stages on a real document, read [`demo/README.md`](demo/README.md). It follows a small `.tex` file through every box of the diagram, using the output of `python3 texwc.py trace`.
+
 ## Files
 
 | File | Purpose |
 |---|---|
-| `texwc.py` | Command-line entry point (`count`, `diff`, `calibrate`, `probe`) |
+| `texwc.py` | Command-line entry point (`count`, `diff`, `calibrate`, `probe`, `trace`, `setup`) |
 | `wordcount.toml` | All rules: input files, tokenizer, what to count, macro expansions, numbering formats |
 | `wordcount/tex_preprocess.py` | Rewrites the LaTeX: expands macros, numbers headings and captions, builds the TOC, flattens tables, adds header/footer text |
 | `wordcount/tex_extract.py` | Runs pandoc (with citeproc) and turns its output into text blocks |
 | `wordcount/docx_extract.py` | Reads a `.docx` into the same kind of text blocks (body, TOC, captions, headers/footers) |
 | `wordcount/common.py` | Config loading, tokenizer and filters (shared by both sides) |
+| `wordcount/report.py` | Prints the per-section and per-kind counts and the tex-vs-docx diff |
+| `wordcount/trace.py` | Writes the output of every stage to a folder (`trace` command) |
 | `wordcount/lo_count.py` | Gets a live word count from LibreOffice (used by `calibrate` and `probe`) |
 | `wordcount/system.py` | Finds pandoc and LibreOffice for the current OS (`[system]` in the config) |
 | `csl/*.csl` | Citation styles: APA (default), IEEE, Chicago, Harvard |
+| `demo/` | Walkthrough of the pipeline: `demo.tex`, its `trace/` output and a step-by-step `README.md` |
 | `example/` | Example document: `main.tex` + `references.bib`, the benchmark `LCA_PR.docx` and the compiled `LCA_PR.pdf` |
 
 ## Install
@@ -111,6 +116,7 @@ To check the count against a `.docx` of the same document, use `diff --docx file
 | `count --docx FILE` | Counts a `.docx` with the same rules |
 | `diff` | Compares the tex with the reference docx: per section, per kind, then every differing run of words |
 | `calibrate` | Prints every count side by side: the stored docx count, a live LibreOffice count, and our counts for both files |
+| `trace --out DIR` | Writes the output of every stage to `DIR`: the preprocessed LaTeX and a diff for each step, the pandoc command and AST, the blocks, the filter decisions, the words and the count. With `--docx FILE` it also writes the docx side and the diff. See [`demo/`](demo/README.md) |
 | `setup` | Checks Python, pandoc, the input files and LibreOffice, and says how to fix anything missing |
 | `probe "text" ...` | Compares LibreOffice's live count of a snippet with our tokenizer, to settle a single rule |
 

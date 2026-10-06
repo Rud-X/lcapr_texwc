@@ -1,0 +1,67 @@
+# tokenizer: libreoffice; every ⟦…⟧ is one counted word
+
+## #0 [toc] (front matter)   (1 word, running total 1)
+⟦Contents⟧
+
+## #1 [toc] (front matter)   (3 words, running total 4)
+⟦1.⟧ ⟦Introduction⟧ ⟦0⟧
+
+## #2 [toc] (front matter)   (4 words, running total 8)
+⟦1.1⟧ ⟦Functional⟧ ⟦unit⟧ ⟦0⟧
+
+## #3 [toc] (front matter)   (3 words, running total 11)
+⟦2.⟧ ⟦Conclusion⟧ ⟦0⟧
+
+## #4 [heading] 1. Introduction   (2 words, running total 13)
+⟦1.⟧ ⟦Introduction⟧
+
+## #5 [guidance] 1. Introduction   (6 words, running total 19)
+⟦ℹ⟧ ⟦Delete⟧ ⟦this⟧ ⟦box⟧ ⟦before⟧ ⟦submitting.⟧
+
+## #6 [para] 1. Introduction   (27 words, running total 46)
+⟦The⟧ ⟦study⟧ ⟦covers⟧ ⟦2026⟧ ⟦2027⟧ ⟦and⟧ ⟦compares⟧ ⟦two⟧ ⟦packaging⟧ ⟦options.⟧ ⟦LCA⟧ ⟦follows⟧ ⟦ISO⟧ ⟦standards⟧ ⟦(De⟧ ⟦Bruijn⟧ ⟦et⟧ ⟦al.,⟧ ⟦2002).⟧ ⟦•⟧ ⟦A⟧ ⟦lone⟧ ⟦bullet⟧ ⟦is⟧ ⟦a⟧ ⟦word⟧ ⟦too.⟧
+
+## #7 [heading] 1. Introduction > 1.1 Functional unit   (3 words, running total 49)
+⟦1.1⟧ ⟦Functional⟧ ⟦unit⟧
+
+## #8 [para] 1. Introduction > 1.1 Functional unit   (12 words, running total 61)
+⟦The⟧ ⟦functional⟧ ⟦unit⟧ ⟦is⟧ ⟦MATH⟧ ⟦of⟧ ⟦drink.⟧ ⟦Table⟧ ⟦1⟧ ⟦lists⟧ ⟦the⟧ ⟦options.⟧
+
+## #9 [caption] 1. Introduction > 1.1 Functional unit   (4 words, running total 65)
+⟦Table⟧ ⟦1:⟧ ⟦Packaging⟧ ⟦options⟧
+
+## #10 [table] 1. Introduction > 1.1 Functional unit   (1 word, running total 66)
+⟦Option⟧
+
+## #11 [table] 1. Introduction > 1.1 Functional unit   (1 word, running total 67)
+⟦Material⟧
+
+## #12 [table] 1. Introduction > 1.1 Functional unit   (1 word, running total 68)
+⟦A⟧
+
+## #13 [table] 1. Introduction > 1.1 Functional unit   (2 words, running total 70)
+⟦Glass⟧ ⟦bottle⟧
+
+## #14 [table] 1. Introduction > 1.1 Functional unit   (1 word, running total 71)
+⟦B⟧
+
+## #15 [table] 1. Introduction > 1.1 Functional unit   (2 words, running total 73)
+⟦PET⟧ ⟦bottle⟧
+
+## #16 [heading] 2. Conclusion   (2 words, running total 75)
+⟦2.⟧ ⟦Conclusion⟧
+
+## #17 [para] 2. Conclusion   (8 words, running total 83)
+⟦PET⟧ ⟦has⟧ ⟦the⟧ ⟦lower⟧ ⟦footprint⟧ ⟦in⟧ ⟦this⟧ ⟦example.⟧
+
+## #20 [header] (headers/footers)   (4 words, running total 87)
+⟦LCA⟧ ⟦Demo⟧ ⟦Word⟧ ⟦Count⟧
+
+## #21 [header] (headers/footers)   (4 words, running total 91)
+⟦LCA⟧ ⟦Demo⟧ ⟦Word⟧ ⟦Count⟧
+
+## #22 [header] (headers/footers)   (1 word, running total 92)
+⟦0⟧
+
+## #23 [header] (headers/footers)   (1 word, running total 93)
+⟦0⟧

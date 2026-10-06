@@ -23,7 +23,8 @@ def bib_paths(cfg: Config) -> list[Path]:
     return find_bib_files(tex) if tex and tex.is_file() else []
 
 
-def run_pandoc(tex: str, cfg: Config, with_bibliography: bool) -> tuple[dict, list[str]]:
+def run_pandoc(tex: str, cfg: Config, with_bibliography: bool) -> tuple[dict, list[str], list[str]]:
+    """Return (pandoc JSON AST, notes from stderr, the command that was run)."""
     pandoc = resolve(cfg).pandoc
     if not pandoc:
         raise SystemExit("pandoc not found: install it or set [system] pandoc in the config "
@@ -50,7 +51,7 @@ def run_pandoc(tex: str, cfg: Config, with_bibliography: bool) -> tuple[dict, li
         raise SystemExit("pandoc failed:\n" + "\n".join(errors[-15:]))
     notes = [line for line in proc.stderr.splitlines()
              if re.search(r"Skipped|Could not|not found|WARNING", line, re.I)]
-    return json.loads(proc.stdout), notes
+    return json.loads(proc.stdout), notes, cmd
 
 
 class AstWalker:
@@ -155,12 +156,12 @@ class AstWalker:
         self.walk(caption[1], "caption")
 
 
-def extract_tex(cfg: Config) -> tuple[list[Block], list[str], str]:
-    """Return (blocks, warnings, preprocessed LaTeX)."""
+def extract_tex(cfg: Config, trace: dict | None = None) -> tuple[list[Block], list[str], str]:
+    """Return (blocks, warnings, preprocessed LaTeX). `trace` collects the intermediate results."""
     pre = TexPreprocessor(cfg)
     tex = pre.run(cfg.path("tex"))
     render_bib = pre.has_bibliography and cfg["tex"]["bibliography"].get("mode", "render") == "render"
-    ast, notes = run_pandoc(tex, cfg, render_bib)
+    ast, notes, cmd = run_pandoc(tex, cfg, render_bib)
 
     walker = AstWalker(cfg)
     blocks = ast["blocks"]
@@ -168,6 +169,9 @@ def extract_tex(cfg: Config) -> tuple[list[Block], list[str], str]:
     walker.refs = [b for b in blocks if b["t"] == "Div" and b["c"][0][0] == "refs"]
     blocks = [b for b in blocks if not (b["t"] == "Div" and b["c"][0][0] == "refs")]
     walker.walk(blocks)
+    if trace is not None:
+        trace.update(preprocessor=pre, preprocessed=tex, pandoc_cmd=cmd, ast=ast,
+                     texts_before_replacements=[b.text for b in walker.blocks])
 
     for rule in cfg["tex"].get("replacements", []):
         pat = re.compile(rule["pattern"])

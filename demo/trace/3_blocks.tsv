@@ -1,0 +1,25 @@
+#	kind	section	text
+0	toc	(front matter)	Contents
+1	toc	(front matter)	1. Introduction 0
+2	toc	(front matter)	1.1 Functional unit 0
+3	toc	(front matter)	2. Conclusion 0
+4	heading	1. Introduction	1. Introduction
+5	guidance	1. Introduction	ℹ Delete this box before submitting.
+6	para	1. Introduction	The study covers 2026–2027 and compares two packaging options. LCA follows ISO standards (De Bruijn et al., 2002). • A lone bullet is a word too.
+7	heading	1. Introduction > 1.1 Functional unit	1.1 Functional unit
+8	para	1. Introduction > 1.1 Functional unit	The functional unit is MATH of drink. Table 1 lists the options.
+9	caption	1. Introduction > 1.1 Functional unit	Table 1: Packaging options
+10	table	1. Introduction > 1.1 Functional unit	Option
+11	table	1. Introduction > 1.1 Functional unit	Material
+12	table	1. Introduction > 1.1 Functional unit	A
+13	table	1. Introduction > 1.1 Functional unit	Glass bottle
+14	table	1. Introduction > 1.1 Functional unit	B
+15	table	1. Introduction > 1.1 Functional unit	PET bottle
+16	heading	2. Conclusion	2. Conclusion
+17	para	2. Conclusion	PET has the lower footprint in this example.
+18	heading	References	References
+19	bibliography	References	De Bruijn, H., Van Duin, R., Huijbregts, M. A. J., Guinee, J. B., Gorree, M., Heijungs, R., Huppes, G., Kleijn, R., De Koning, A., Van Oers, L., Wegener Sleeswijk, A., Suh, S., & Udo De Haes, H. A. (Eds.). (2002). Handbook on Life Cycle Assessment: Operational Guide to the ISO Standards (Vol. 7). Springer Netherlands. https://doi.org/10.1007/0-306-48055-7
+20	header	(headers/footers)	LCA Demo – Word Count
+21	header	(headers/footers)	LCA Demo – Word Count
+22	header	(headers/footers)	0
+23	header	(headers/footers)	0

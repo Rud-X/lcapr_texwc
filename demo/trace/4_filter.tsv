@@ -1,0 +1,25 @@
+#	decision	reason	words	kind	text
+0	KEEP	kept	1	toc	Contents
+1	KEEP	kept	3	toc	1. Introduction 0
+2	KEEP	kept	4	toc	1.1 Functional unit 0
+3	KEEP	kept	3	toc	2. Conclusion 0
+4	KEEP	kept	2	heading	1. Introduction
+5	KEEP	kept	6	guidance	ℹ Delete this box before submitting.
+6	KEEP	kept	27	para	The study covers 2026–2027 and compares two packaging options. LCA follows ISO standards (
+7	KEEP	kept	3	heading	1.1 Functional unit
+8	KEEP	kept	12	para	The functional unit is MATH of drink. Table 1 lists the options.
+9	KEEP	kept	4	caption	Table 1: Packaging options
+10	KEEP	kept	1	table	Option
+11	KEEP	kept	1	table	Material
+12	KEEP	kept	1	table	A
+13	KEEP	kept	2	table	Glass bottle
+14	KEEP	kept	1	table	B
+15	KEEP	kept	2	table	PET bottle
+16	KEEP	kept	2	heading	2. Conclusion
+17	KEEP	kept	8	para	PET has the lower footprint in this example.
+18	DROP	after stop heading 'References'		heading	References
+19	DROP	after stop heading 'References'		bibliography	De Bruijn, H., Van Duin, R., Huijbregts, M. A. J., Guinee, J. B., Gorree, M., Heijungs, R.
+20	KEEP	kept	4	header	LCA Demo – Word Count
+21	KEEP	kept	4	header	LCA Demo – Word Count
+22	KEEP	kept	1	header	0
+23	KEEP	kept	1	header	0

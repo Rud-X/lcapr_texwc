@@ -1,0 +1,3 @@
+pandoc -f latex -t json --verbose --metadata link-citations=false --citeproc --bibliography demo/demo.bib --csl csl/apa.csl --metadata lang=en-US < 1_preprocessed.tex > 2_pandoc_ast.json
+
+no warnings

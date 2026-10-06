@@ -153,6 +153,7 @@ class TexPreprocessor:
         self.t = cfg["tex"]
         self.warnings: list[str] = []
         self.has_bibliography = False
+        self.stages: dict[str, str] = {}   # body after each step, for `texwc.py trace`
 
     # ---- entry point
     def run(self, path: Path) -> str:
@@ -166,12 +167,18 @@ class TexPreprocessor:
         body = src[m_begin.end() : m_end.start() if m_end else len(src)]
 
         self._read_preamble(preamble)
+        self.stages["input"] = body
         for env in self.t.get("drop_environments", []):
             body = self._drop_env(body, env)
+        self.stages["drop_environments"] = body
         body = self._expand_macros(body)
+        self.stages["macros"] = body
         body = self._tables(body)
+        self.stages["tables"] = body
         body = self._structure(body)
+        self.stages["structure"] = body
         body += self._headers_footers()
+        self.stages["headers_footers"] = body
         return "\\begin{document}\n" + body + "\n\\end{document}\n"
 
     def _read(self, path: Path) -> str:

@@ -7,21 +7,22 @@
   python3 texwc.py calibrate             compare all available counts
   python3 texwc.py probe "a – b" "x / y" LibreOffice live count vs our tokenizer
   python3 texwc.py setup                 check the installation ([system] in the config)
+  python3 texwc.py trace --out DIR       write the output of every pipeline stage to DIR
 
 All rules are in wordcount.toml (--config to use another file).
 """
 from __future__ import annotations
 
 import argparse
-import difflib
 import re
 import subprocess
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
 from wordcount.common import Block, Config, Tokenizer, apply_filters, load_config
 from wordcount.docx_extract import DocxExtractor, stored_word_count
+from wordcount.report import breakdown, print_diff, print_kinds, print_sections, total
 from wordcount.system import resolve, utf8_env
 
 HERE = Path(__file__).resolve().parent
@@ -55,23 +56,6 @@ def print_warnings(warnings: list[str]):
               file=sys.stderr)
     for w in other:
         print("warning:", w, file=sys.stderr)
-
-
-def total(blocks: list[Block]) -> int:
-    return sum(len(b.tokens) for b in blocks)
-
-
-def section_key(b: Block, depth: int) -> tuple[str, ...]:
-    return b.section[:depth]
-
-
-def breakdown(blocks: list[Block], depth: int) -> tuple[dict, Counter]:
-    by_section: dict[tuple, int] = defaultdict(int)
-    by_kind: Counter = Counter()
-    for b in blocks:
-        by_section[section_key(b, depth)] += len(b.tokens)
-        by_kind[b.kind] += len(b.tokens)
-    return by_section, by_kind
 
 
 def run_lo_count(cfg: Config, args: list[str]) -> str:
@@ -110,13 +94,9 @@ def cmd_count(cfg: Config, args):
             for b in blocks:
                 f.write(f"## [{b.kind}] {' > '.join(b.section)}\n{' '.join(b.tokens)}\n")
     if args.sections:
-        print("Words per section:")
-        for key, n in by_section.items():
-            print(f"  {n:6d}  {'  ' * (len(key) - 1)}{key[-1]}")
+        print_sections(by_section)
     if args.kinds:
-        print("Words per kind:")
-        for k, n in by_kind.most_common():
-            print(f"  {n:6d}  {k}")
+        print_kinds(by_kind)
     print(f"{total(blocks)} words  ({source}, tokenizer: {tok.mode})")
 
 
@@ -125,46 +105,7 @@ def cmd_diff(cfg: Config, args):
     tex = apply_filters(tex_blocks(cfg, args.verbose), cfg, tok)
     docx_path = args.docx or cfg.path("reference_docx")
     docx = apply_filters(DocxExtractor(cfg).extract(docx_path), cfg, tok)
-
-    # per section / kind comparison
-    ts, tk = breakdown(tex, args.depth)
-    ds, dk = breakdown(docx, args.depth)
-    print(f"{'tex':>6} {'docx':>6} {'diff':>6}  section")
-    for key in list(dict.fromkeys(list(ds) + list(ts))):
-        a, b = ts.get(key, 0), ds.get(key, 0)
-        if a != b or args.all:
-            print(f"{a:6d} {b:6d} {a - b:+6d}  {'  ' * (len(key) - 1)}{key[-1]}")
-    print(f"{'tex':>6} {'docx':>6} {'diff':>6}  kind")
-    for k in list(dict.fromkeys(list(dk) + list(tk))):
-        a, b = tk.get(k, 0), dk.get(k, 0)
-        if a != b or args.all:
-            print(f"{a:6d} {b:6d} {a - b:+6d}  {k}")
-    print(f"{total(tex):6d} {total(docx):6d} {total(tex) - total(docx):+6d}  TOTAL\n")
-
-    # token level
-    tt = [(t, b) for b in tex for t in b.tokens]
-    dt = [(t, b) for b in docx for t in b.tokens]
-
-    def norm(t: str, b: Block) -> str:
-        if b.kind == "toc" and t.isdigit():
-            return "#"  # page numbers differ but are one token either way
-        return t.replace("...", "…").replace("\u2011", "-")
-
-    sm = difflib.SequenceMatcher(None, [norm(t, b) for t, b in tt], [norm(t, b) for t, b in dt], autojunk=False)
-    hunks = [op for op in sm.get_opcodes() if op[0] != "equal"]
-    print(f"{len(hunks)} differing token runs (tex → docx):")
-    for op, a1, a2, b1, b2 in hunks:
-        ttoks = [t for t, _ in tt[a1:a2]]
-        dtoks = [t for t, _ in dt[b1:b2]]
-        blk = (tt[a1][1] if a1 < len(tt) else tt[-1][1]) if ttoks or not dtoks else dt[b1][1]
-        where = " > ".join(blk.section)
-        # same characters, different splitting -> tokenizer rule; otherwise content
-        nature = "split" if "".join(ttoks) == "".join(dtoks) else "content"
-        ctx = " ".join(t for t, _ in tt[max(0, a1 - args.context):a1])
-        print(f"\n  [{nature}] {len(ttoks) - len(dtoks):+d}  {where}  ({blk.kind})")
-        print(f"    context: …{ctx}")
-        print(f"    tex : {' '.join(ttoks) or '∅'}")
-        print(f"    docx: {' '.join(dtoks) or '∅'}")
+    print_diff(tex, docx, args.depth, args.context, args.all)
 
 
 def cmd_calibrate(cfg: Config, args):
@@ -202,6 +143,12 @@ def cmd_probe(cfg: Config, args):
         toks = tok(t)
         flag = "" if n == len(toks) else "   <-- mismatch"
         print(f"{n if n is not None else '-':>4} {len(toks):>4}  {t!r} → {toks}{flag}")
+
+
+def cmd_trace(cfg: Config, args):
+    from wordcount.trace import write_trace
+    docx = Path(args.docx) if args.docx else None
+    write_trace(cfg, Tokenizer(cfg, args.mode), Path(args.out), args.depth, docx, args.context)
 
 
 def cmd_setup(cfg: Config, args):
@@ -288,6 +235,12 @@ def main(argv=None):
     p = sub.add_parser("probe", help="LibreOffice live count vs our tokenizer for snippets")
     p.add_argument("text", nargs="+")
 
+    p = sub.add_parser("trace", help="write the output of every pipeline stage to a folder")
+    p.add_argument("--out", default="trace", help="output folder (default: trace)")
+    p.add_argument("--docx", help="also trace this .docx and diff it against the tex")
+    p.add_argument("--depth", type=int, default=2)
+    p.add_argument("--context", type=int, default=6)
+
     sub.add_parser("setup", help="check that pandoc, LibreOffice and the input files are found")
 
     args = ap.parse_args(argv)
@@ -299,7 +252,7 @@ def main(argv=None):
     if args.until is not None:
         cfg["count"]["stop_at_heading"] = args.until
     commands = {"count": cmd_count, "diff": cmd_diff, "calibrate": cmd_calibrate,
-                "probe": cmd_probe, "setup": cmd_setup}
+                "probe": cmd_probe, "setup": cmd_setup, "trace": cmd_trace}
     sys.exit(commands[args.cmd](cfg, args))
 
 

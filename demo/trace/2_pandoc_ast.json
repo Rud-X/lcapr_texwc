@@ -1,0 +1,1476 @@
+{
+ "pandoc-api-version": [
+  1,
+  23,
+  1
+ ],
+ "meta": {
+  "bibliography": {
+   "t": "MetaString",
+   "c": "/home/rud/Documents/01_IE/12_LCA/lcapr_texwc/demo/demo.bib"
+  },
+  "csl": {
+   "t": "MetaString",
+   "c": "/home/rud/Documents/01_IE/12_LCA/lcapr_texwc/csl/apa.csl"
+  },
+  "lang": {
+   "t": "MetaString",
+   "c": "en-US"
+  },
+  "link-citations": {
+   "t": "MetaBool",
+   "c": false
+  }
+ },
+ "blocks": [
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wctoc"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "Contents"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "1."
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Introduction"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "0"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "1.1"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Functional"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "unit"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "0"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "2."
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Conclusion"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "0"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Header",
+   "c": [
+    1,
+    [
+     "introduction",
+     [
+      "unnumbered"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Str",
+      "c": "1."
+     },
+     {
+      "t": "Space"
+     },
+     {
+      "t": "Str",
+      "c": "Introduction"
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wcguidance"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "ℹ"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Delete"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "this"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "box"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "before"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "submitting."
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Para",
+   "c": [
+    {
+     "t": "Str",
+     "c": "The"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "study"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "covers"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "2026–2027"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "and"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "compares"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "two"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "packaging"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "options."
+    },
+    {
+     "t": "SoftBreak"
+    },
+    {
+     "t": "Str",
+     "c": "LCA"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "follows"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "ISO"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "standards"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Cite",
+     "c": [
+      [
+       {
+        "citationId": "debruijnHandbookLifeCycle2002a",
+        "citationPrefix": [],
+        "citationSuffix": [],
+        "citationMode": {
+         "t": "NormalCitation"
+        },
+        "citationNoteNum": 0,
+        "citationHash": 0
+       }
+      ],
+      [
+       {
+        "t": "Str",
+        "c": "(De"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Bruijn"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "et"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "al.,"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "2002)"
+       }
+      ]
+     ]
+    },
+    {
+     "t": "Str",
+     "c": "."
+    },
+    {
+     "t": "SoftBreak"
+    },
+    {
+     "t": "Str",
+     "c": "• A"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "lone"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "bullet"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "is"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "a"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "word"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "too."
+    }
+   ]
+  },
+  {
+   "t": "Header",
+   "c": [
+    2,
+    [
+     "functional-unit",
+     [
+      "unnumbered"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Str",
+      "c": "1.1"
+     },
+     {
+      "t": "Space"
+     },
+     {
+      "t": "Str",
+      "c": "Functional"
+     },
+     {
+      "t": "Space"
+     },
+     {
+      "t": "Str",
+      "c": "unit"
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Para",
+   "c": [
+    {
+     "t": "Str",
+     "c": "The"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "functional"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "unit"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "is"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Math",
+     "c": [
+      {
+       "t": "InlineMath"
+      },
+      "1\\,\\mathrm{m^3}"
+     ]
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "of"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "drink."
+    },
+    {
+     "t": "SoftBreak"
+    },
+    {
+     "t": "Str",
+     "c": "Table"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "1"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "lists"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "the"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "options."
+    }
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wccaption"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "Table"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "1:"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Packaging"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "options"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wctable"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "Option"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "Material"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "A"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "Glass"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "bottle"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "B"
+       }
+      ]
+     },
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "PET"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "bottle"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Header",
+   "c": [
+    1,
+    [
+     "conclusion",
+     [
+      "unnumbered"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Str",
+      "c": "2."
+     },
+     {
+      "t": "Space"
+     },
+     {
+      "t": "Str",
+      "c": "Conclusion"
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Para",
+   "c": [
+    {
+     "t": "Str",
+     "c": "PET"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "has"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "the"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "lower"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "footprint"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "in"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "this"
+    },
+    {
+     "t": "Space"
+    },
+    {
+     "t": "Str",
+     "c": "example."
+    }
+   ]
+  },
+  {
+   "t": "Header",
+   "c": [
+    1,
+    [
+     "references",
+     [
+      "unnumbered"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Str",
+      "c": "References"
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wcbibliography"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "WCBIBLIOGRAPHY"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wcheader"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "LCA"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Demo"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "–"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Word"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Count"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wcheader"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "LCA"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Demo"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "–"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Word"
+       },
+       {
+        "t": "Space"
+       },
+       {
+        "t": "Str",
+        "c": "Count"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wcheader"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "0"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "",
+     [
+      "wcheader"
+     ],
+     []
+    ],
+    [
+     {
+      "t": "Para",
+      "c": [
+       {
+        "t": "Str",
+        "c": "0"
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "t": "Div",
+   "c": [
+    [
+     "refs",
+     [
+      "references",
+      "csl-bib-body",
+      "hanging-indent"
+     ],
+     [
+      [
+       "entry-spacing",
+       "0"
+      ],
+      [
+       "line-spacing",
+       "2"
+      ]
+     ]
+    ],
+    [
+     {
+      "t": "Div",
+      "c": [
+       [
+        "ref-debruijnHandbookLifeCycle2002a",
+        [
+         "csl-entry"
+        ],
+        []
+       ],
+       [
+        {
+         "t": "Para",
+         "c": [
+          {
+           "t": "Str",
+           "c": "De"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Bruijn,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "H.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Van"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Duin,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "R.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Huijbregts,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "M."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "A."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "J.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Guinee,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "J."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "B.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Gorree,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "M.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Heijungs,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "R.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Huppes,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "G.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Kleijn,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "R.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "De"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Koning,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "A.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Van"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Oers,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "L.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Wegener"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Sleeswijk,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "A.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Suh,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "S.,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "&"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Udo"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "De"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Haes,"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "H."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "A."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "(Eds.)."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "(2002)."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Emph",
+           "c": [
+            {
+             "t": "Str",
+             "c": "Handbook"
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Str",
+             "c": "on"
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "Life"
+               }
+              ]
+             ]
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "Cycle"
+               }
+              ]
+             ]
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "Assessment"
+               }
+              ]
+             ]
+            },
+            {
+             "t": "Str",
+             "c": ":"
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "Operational"
+               }
+              ]
+             ]
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "Guide"
+               }
+              ]
+             ]
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Str",
+             "c": "to"
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Str",
+             "c": "the"
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "ISO"
+               }
+              ]
+             ]
+            },
+            {
+             "t": "Space"
+            },
+            {
+             "t": "Span",
+             "c": [
+              [
+               "",
+               [],
+               []
+              ],
+              [
+               {
+                "t": "Str",
+                "c": "Standards"
+               }
+              ]
+             ]
+            }
+           ]
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "(Vol."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "7)."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Springer"
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Str",
+           "c": "Netherlands."
+          },
+          {
+           "t": "Space"
+          },
+          {
+           "t": "Link",
+           "c": [
+            [
+             "",
+             [],
+             []
+            ],
+            [
+             {
+              "t": "Str",
+              "c": "https://doi.org/10.1007/0-306-48055-7"
+             }
+            ],
+            [
+             "https://doi.org/10.1007/0-306-48055-7",
+             ""
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      ]
+     }
+    ]
+   ]
+  }
+ ]
+}

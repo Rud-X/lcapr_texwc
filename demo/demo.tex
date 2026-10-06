@@ -1,0 +1,74 @@
+% Demo for texwc: a tiny document that triggers each counting rule once.
+% Trace it with:  python3 texwc.py --tex demo/demo.tex trace --out demo/trace
+% Each comment names the rule in wordcount.toml that the line below it exercises.
+\documentclass[11pt]{article}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage[style=apa]{biblatex}
+% [input] bib = "": the .bib file is found from this line
+\addbibresource{demo.bib}
+
+\pagestyle{fancy}
+\fancyhf{}
+% [tex.headers]: header/footer text counts, twice (copies = 2); \thepage -> "0"
+\fancyhead[L]{LCA Demo -- Word Count}
+\fancyfoot[R]{\thepage}
+% [tex.toc]: the title of the generated table of contents
+\renewcommand{\contentsname}{Contents}
+
+% [tex.macros] guidance: the box becomes a block of kind "guidance", with an ℹ icon
+\newcommand{\guidance}[1]{\par\noindent\colorbox{blue!10}{\parbox{\linewidth}{\itshape #1}}\par}
+
+\begin{document}
+
+% [tex.toc] generate = true: the TOC entries are written out as text
+\tableofcontents
+
+% [tex] heading_format: "1. Introduction"
+\section{Introduction}
+
+\guidance{Delete this box before submitting.}
+
+% [tokenizer.libreoffice] extra_separators: "--" is an en dash, so 2026--2027 is 2 words
+% pandoc --citeproc: \cite becomes "(De Bruijn et al., 2002)" (csl/apa.csl)
+% [tex.macros] textbullet = "•", and count_symbol_only_tokens = true makes it a word
+The study covers 2026--2027 and compares two packaging options.
+LCA follows ISO standards \cite{debruijnHandbookLifeCycle2002a}.
+\textbullet\ A lone bullet is a word too.
+
+% [tex] drop_environments: removed with its content
+\begin{comment}
+This draft note is never counted.
+\end{comment}
+
+% [tex] heading_format: "1.1 Functional unit"
+\subsection{Functional unit}
+
+% [tex] math = "one": inline math is 1 word
+% [tex.refs]: \autoref becomes "Table 1"
+The functional unit is $1\,\mathrm{m^3}$ of drink.
+\autoref{tab:options} lists the options.
+
+\begin{table}[h]
+  % [tex.captions]: "Table 1: Packaging options"
+  \caption{Packaging options}
+  \label{tab:options}
+  % [tex.tables]: one paragraph per cell; \hline is dropped
+  \begin{tabular}{ll}
+    \hline
+    Option & Material \\
+    A & Glass bottle \\
+    B & PET bottle \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{Conclusion}
+
+PET has the lower footprint in this example.
+
+% [count] stop_at_heading = "References": the bibliography is rendered but not counted
+\printbibliography
+\end{document}
