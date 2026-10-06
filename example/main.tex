@@ -1,0 +1,453 @@
+% Document template for LCA-PR course at Leiden University
+% Author: Rud Hansen, co-authored by Claude
+% Based on the .docx template provided in the course for the LCA-PR report
+\documentclass[10pt]{article}
+% Margins from the Word template: 2.54 cm top/bottom, 2.22 cm left/right
+\usepackage[a4paper, top=2.54cm, bottom=2.54cm, left=2.22cm, right=2.22cm, headheight=17pt, headsep=20pt]{geometry}
+
+% Font: the template uses Arial -> Helvetica (metrically identical, works with pdfLaTeX)
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float}
+\usepackage[hyphens]{url}
+\urlstyle{same} % links in Arial like the template
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{xcolor}
+\usepackage{ninecolors}
+\usepackage{tabularray}
+\usepackage{amsmath}
+\usepackage{pdflscape}
+% For highlighting
+\usepackage{soul}
+\sethlcolor{yellow9}
+
+\usepackage{wrapfig}
+
+% Fixing landscape empty page (for floats
+\usepackage{placeins}
+%
+
+\usepackage{eurosym}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{afterpage}
+
+\usepackage{appendix}
+% --------------------------------------
+% ----------  Template setup  ----------
+% --------------------------------------
+% This is where all the weird stuff is done, to make the template look like the Word version
+% --------------------------------------
+
+% ---------- Template colours ----------
+\definecolor{lcablue}{HTML}{2E5FA3}   % title, Heading 1, header/footer/heading rules
+\definecolor{lcadark}{HTML}{333333}   % Heading 2, "Final Report"
+\definecolor{lcamid}{HTML}{444444}    % Heading 3
+\definecolor{lcagrey}{HTML}{666666}   % header text, title-page tagline
+\definecolor{lcalight}{HTML}{999999}  % footer text
+\definecolor{lcaline}{HTML}{DDDDDD}   % title-page separator
+\definecolor{lcaborder}{HTML}{CCCCCC} % table borders
+\definecolor{lcalabel}{HTML}{D9E2F3}  % table label cells
+\definecolor{lcanavy}{HTML}{0E2841}   % captions
+\definecolor{lcalink}{HTML}{0563C1}   % hyperlinks
+\definecolor{lcabox}{HTML}{F0F4FA}    % guidance box background
+\definecolor{lcatext}{HTML}{555555}   % guidance box text
+\definecolor{lcaph}{HTML}{C00000}     % red placeholders
+\definecolor{lcahint}{HTML}{AAAAAA}   % grey placeholders in tables
+
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=lcalink}
+
+\DeclareCaptionFont{lcanavy}{\color{lcanavy}}
+\captionsetup{font={small,it,lcanavy}, singlelinecheck=false}   % 9 pt italic, left-aligned
+
+% ---------- Header / footer ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{lcagrey}LCA Practice \& Reporting -- Research Proposal}
+\fancyhead[R]{\small\color{lcagrey}2026--2027}
+\fancyfoot[L]{\footnotesize\color{lcalight}MSc Industrial Ecology}
+\fancyfoot[R]{\footnotesize\color{lcalight}\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\renewcommand{\headruleskip}{5pt}
+\renewcommand{\headrule}{{\color{lcablue}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+\renewcommand{\footrule}{{\color{lcablue}\hrule width\headwidth height\footrulewidth}}
+
+% ---------- Paragraphs: template uses no indent, single spacing, small gap ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\usepackage{setspace}
+\setstretch{1}
+
+% ---------- Headings ----------
+\usepackage{titlesec}
+\titleformat{\section}{\fontsize{14}{17}\selectfont\bfseries\color{lcablue}}{\thesection.}{0.28em}{}[\vspace{3pt}{\color{lcablue}\titlerule[0.5pt]}]
+\titleformat{\subsection}{\fontsize{12}{14}\selectfont\bfseries\color{lcadark}}{\thesubsection}{0.28em}{}
+\titleformat{\subsubsection}{\fontsize{11}{13}\selectfont\bfseries\color{lcamid}}{\thesubsubsection}{0.28em}{}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+
+% ---------- Table of contents (titletoc ships with titlesec) ----------
+\usepackage{titletoc}
+\renewcommand{\contentsname}{Table of Contents}
+\titlecontents{section}[0pt]{}{\thecontentslabel.\ }{}{\titlerule*[0.5em]{.}\contentspage}
+\titlecontents{subsection}[0.35cm]{}{\thecontentslabel\ }{}{\titlerule*[0.5em]{.}\contentspage}
+\titlecontents{subsubsection}[0.7cm]{}{\thecontentslabel\ }{}{\titlerule*[0.5em]{.}\contentspage}
+
+% ---------- Appendices: lettered subsections shown as "Appendix A: Title" ----------
+\AddToHook{env/appendices/begin}{%
+  \setcounter{subsection}{0}%
+  \renewcommand{\thesubsection}{\Alph{subsection}}%
+  \titleformat{\subsection}{\fontsize{12}{14}\selectfont\bfseries\color{lcadark}}{Appendix \thesubsection:}{0.28em}{}%
+  % in the document body titletoc writes this change into the .toc at this point, so it only affects the appendices
+  \titlecontents{subsection}[0.35cm]{}{Appendix \thecontentslabel:\ }{}{\titlerule*[0.5em]{.}\contentspage}%
+}
+
+% ---------- Appendices: \autoref prints "Appendix A" instead of "subsection A" ----------
+% \autoref takes its name from the link target's prefix ("subsection.8.1" -> \subsectionautorefname).
+% Inside the appendices the subsections get the target "appendix.<n>", so \autoref prints
+% \appendixautorefname ("Appendix"), also when the reference is in the main text.
+% The change is local to the appendices environment and works with old and new hyperref versions.
+\makeatletter
+\def\lca@subsectionname{subsection}
+\AddToHook{env/appendices/begin}{%
+  \let\lca@hyper@refstepcounter\hyper@refstepcounter
+  \def\hyper@refstepcounter#1{%
+    \edef\lca@counter{#1}%
+    \ifx\lca@counter\lca@subsectionname
+      \Hy@MakeCurrentHref{appendix.\theHsubsection}%
+      \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+    \else
+      \lca@hyper@refstepcounter{#1}%
+    \fi
+  }%
+}
+\makeatother
+
+% ---------- Template elements ----------
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}  % lets you type ≥ directly
+\newcommand{\placeholder}[1]{\textcolor{lcaph}{\textbf{#1}}}    % red placeholder
+\newcommand{\placeholderit}[1]{\textcolor{lcaph}{\textit{#1}}}  % italic red placeholder
+\newcommand{\infoicon}{{\setlength{\fboxsep}{1pt}\colorbox{lcablue}{\textcolor{white}{\upshape\bfseries\,i\,}}}}
+\newcommand{\guidance}[1]{\par\noindent\colorbox{lcabox}{\parbox{\dimexpr\linewidth-2\fboxsep}{\setlength{\parskip}{2pt}\small\itshape\infoicon\ \color{lcatext}#1}}\par}
+% Unnumbered headings that still appear in the TOC (as in the template)
+\newcommand{\usection}[1]{\section*{#1}\phantomsection\addcontentsline{toc}{section}{#1}}
+\newcommand{\usubsection}[1]{\subsection*{#1}\phantomsection\addcontentsline{toc}{subsection}{#1}}
+
+\usepackage[
+    backend=biber,
+    style=apa
+  ]{biblatex}
+\addbibresource{references.bib}
+
+
+% --------------------------------------
+% ----------  Document begin  ----------
+% --------------------------------------
+% Here the actual document begins, but also first some setup for the title page
+% --------------------------------------
+
+\begin{document}
+
+% ---------- Title page ----------
+\vspace*{12pt}
+{\fontsize{24}{29}\selectfont\bfseries\color{lcablue} LCA Practice \& Reporting\par}
+{\fontsize{18}{22}\selectfont\color{lcadark} Final Report\par}
+{\large\itshape\color{lcagrey} MSc Industrial Ecology | 2026--2027 | Leiden University\par}
+{\color{lcaline}\rule{\textwidth}{0.5pt}}
+\vspace{12pt}
+
+\begin{tblr}{
+  colspec   = {Q[4.9cm] X},
+  hlines    = {lcaborder},
+  vlines    = {lcaborder},
+  rowsep    = 3pt,
+  column{1} = {bg=lcalabel, font=\bfseries},
+}
+Report title           & [Title of your LCA study – max 60 characters] \\
+Student name           & [First name Last name] \\
+Student number         & \textcolor{red}{\textbf{\textit{[s/u…]}}} \\
+Submission date        & [DD/MM/2026] \\
+Word count (main text) & \textcolor{red}{\textbf{\textit{[XXX / 7,500]}}} \\
+\end{tblr}
+
+\vspace{24pt}
+\textit{Template for the LCA-PR Final Report. Red placeholders} \placeholder{[like this]} \textit{must be replaced with your content. Blue info boxes (marked by an} \infoicon\textit{) provide guidance and should be deleted before submission.}
+
+\vspace{6pt}
+\guidance{Before submitting, check that:\par
+\textbullet\ All figures have captions\par
+\textbullet\ All tables have captions\par
+\textbullet\ Referencing is consistent\par
+\textbullet\ All placeholders are removed\par
+\textbullet\ All blue guidance boxes are deleted\par
+\textbullet\ The Table of contents is updated\par
+\textbullet\ The word count included\par
+\textbullet\ All appendices are attached\par
+\textbullet\ Figure and table numbers are correct and referred to in the text\par
+\textbullet\ All acronyms are defined at first use}
+
+\cite{europeancommission.jointresearchcentre.instituteforenvironmentandsustainability.InternationalReferenceLife2010}
+
+\cite{debruijnHandbookLifeCycle2002a}
+
+\newpage
+\usection{Artificial intelligence (AI) usage}
+\guidance{Briefly state whether you used AI for this deliverable and, if so, how. See the course syllabus and Leiden University's AI guidelines for more information (\href{https://www.staff.universiteitleiden.nl/binaries/content/assets/ai-gidsen/ai-guide-for-teachers---new.pdf}{here}).}
+
+\placeholder{[Add your declaration here.]}
+
+\newpage
+\usection{Abstract}
+\guidance{Max 300 words. Based on the abstract, one should be able to understand what has been done in a study and be intrigued to read further. Create a logical storyline covering the topic, research question, functional unit, results, key data/assumptions/limitations, conclusions and recommendations. Write it last. It should make your audience want to know more.}
+
+\placeholder{[Add your abstract here. Max 300 words.]}
+
+\textbf{Keywords:} \placeholder{[keyword 1]}, \placeholder{[keyword 2]}, \placeholder{[keyword 3]}, \placeholder{[keyword 4]}, \placeholder{[keyword 5]}
+
+\newpage
+\guidance{Do not forget to update the Table of Contents in the end (right-click → .'Update field').}
+\tableofcontents
+
+\newpage
+\usection{Course Modelling Requirements}
+\guidance{Complete this table to show that all model requirements have been met. Provide openLCA process numbers (where needed) and a brief explanation for each.}
+
+\begin{tblr}{
+  colspec        = {X[1,l] X[3,l] X[2,l] X[3.4,l]},
+  hlines         = {lcaborder},
+  vlines         = {lcaborder},
+  rowsep         = 3pt,
+  cells          = {font=\small},
+  row{1}         = {bg=lcablue, fg=white, font=\small\bfseries},
+  cell{2-Z}{3,4} = {fg=lcahint, font=\small\itshape},
+}
+\#  & Requirement                                                     & Process No.         & (Brief) Explanation \\
+1   & Comparison of ≥ 2 alternatives                                  & Not needed          & [Brief explanation] \\
+2   & A LCA over the whole life cycle (cradle to grave)               & Not needed          & [Brief explanation] \\
+3   & Full impact assessment (EF AND either CML or ReCiPe)            & Not needed          & [Brief explanation] \\
+4   & ≥ 2 contribution analysis types for ≥ 4 impact categories       & Not needed          & [Brief explanation] \\
+5   & ≥ 3 sensitivity analyses (allocation + characterisation + free choice) & Not needed   & [Brief explanation] \\
+6   & ≥ 5 foreground processes                                        & Not needed          & [Brief explanation] \\
+7   & ≥ 1 Balanced closed loop                                        & [Process number(s)] & [Brief explanation] \\
+8   & ≥ 1 Multifunctional co-production process                       & [Process number(s)] & [Brief explanation] \\
+9   & ≥ 1 Unit process with ≥ 3 calculated environmental flows        & [Process number(s)] & [Brief explanation] \\
+10  & ≥ 1 Disposal process                                            & [Process number(s)] & [Brief explanation] \\
+\end{tblr}
+
+\newpage
+\section{Introduction}
+\guidance{Include: background and context, problem statement, literature review (at least 2 existing LCA studies on your topic), knowledge gap, and research question(s).You can build on the introduction you wrote for your proposal (this is not considered self-plagiarism in this case). Improve the introduction based on the feedback you received and the knowledge you gained along the way.}
+
+\placeholder{[Write your introduction here.]}
+
+\section{Goal and Scope Definition}
+\subsection{Goal definition}
+\guidance{Describe: goal of the study, intended application, researcher, commissioner, target audience, steering committee, and expert reviewer. If not applicable, state ``None''. Look at the feedback you received on your proposal to improve where needed.}
+
+\placeholder{[Define the goal of the study.]}
+
+\subsection{Scope definition}
+\guidance{Describe: ALCA/CLCA choice, type of LCA (detailed/screening), temporal, geographical and technology coverage, coverage of processes and of interventions and impacts. Studies must cover a full life cycle (no cradle-to-gate studies). Look at the feedback you received on your proposal to improve where needed.}
+
+\placeholder{[Define the scope.]}
+
+\subsection{Function, functional unit, alternatives, and reference flows}
+\guidance{State the function, define the functional unit precisely, as explained in the theory weeks lecture, present the alternatives being compared, and define the reference flows for each alternative. Add a brief discussion of your choices, if needed. Look at the feedback you received on your proposal to improve where needed.}
+
+\textbf{Function:} \placeholder{[State the function of the system studied.]}
+
+\textbf{Functional unit:} \placeholder{[Define the functional unit precisely -- specify quantity, quality, and time dimension.]}
+
+\textbf{Alternatives:} \placeholder{[Define Alternative 1 and Alternative 2 (and any additional alternatives).]}
+
+\textbf{Reference flows:} \placeholder{[Define the reference flows for each alternative.]}
+
+\placeholder{[Explain your choices here briefly (if needed).]}
+
+\section{Inventory Analysis}
+\subsection{System boundaries}
+\subsubsection{Economy--environment system boundary}
+\guidance{Describe where the economy--environment system boundary has been drawn and how environmental interventions (resource use, emissions) have been defined.}
+
+\placeholder{[Describe the economy--environment system boundary.]}
+
+\subsubsection{Cut-offs}
+\guidance{Describe which processes or flows were identified as part of the product system, but excluded from your model of this system (see FAQ document on Brightspace). Provide justification for these choices.}
+
+\placeholder{[Describe and justify the cut-off decisions.]}
+
+\subsection{Flowcharts}
+\guidance{Insert your flowcharts here (one per alternative). Follow the flowchart conventions from the Theory Weeks. Do not copy from literature. Do not forget the captions.}
+
+\begin{figure}[H]
+    \placeholder{\textit{[Insert Flowchart -- Alternative 1]}}
+    \caption{\placeholderit{}}
+    \label{fig:flowchart-alt1}
+\end{figure}
+
+\begin{figure}[H]
+    \placeholder{\textit{[Insert Flowchart -- Alternative 2]}}
+    \caption{\placeholderit{}}
+    \label{fig:flowchart-alt2}
+\end{figure}
+
+\subsection{Data collection and relating data to unit processes}
+\guidance{Describe data sources for each foreground unit process, data quality, and how raw data was converted to unit process data. This section (in combination with appendices) must be detailed enough for teachers to reproduce your work.}
+
+\placeholder{[Describe data collection for all foreground unit processes. Use the Appendix for detailed unit process reports (UPR template, see Brightspace). State the ecoinvent version and its system model.]}
+
+\subsection{Multifunctionality and allocation}
+\guidance{Report all four steps of identifying multifunctionality for all foreground processes in the table below. Describe how allocation factors were calculated and which data were used for that below the table.}
+
+\begin{tblr}{
+  colspec   = {X[2.2,l] X[1.6,l] X[1.6,l] X[1.6,l] X[2.5,l]},
+  hlines    = {lcaborder},
+  vlines    = {lcaborder},
+  rowsep    = 3pt,
+  row{1}    = {bg=lcalabel, font=\small\bfseries},
+  row{2-Z}  = {fg=lcahint, font=\small\itshape},
+}
+Process               & G\textsubscript{in}/G\textsubscript{out}/W\textsubscript{in}/W\textsubscript{out} & Functional flows   & Multifunctional? & Solution   \\
+{[P\#\#\#] Process name} & \dots & [Functional flows] & Yes/No & [Solution] \\
+{[P\#\#\#] Process name} & \dots & [Functional flows] & Yes/No & [Solution] \\
+{[P\#\#\#] Process name} & \dots & [Functional flows] & Yes/No & [Solution] \\
+{[P\#\#\#] Process name} & \dots & [Functional flows] & Yes/No & [Solution] \\
+{[P\#\#\#] Process name} & \dots & [Functional flows] & Yes/No & [Solution] \\
+\end{tblr}
+
+\placeholder{[For the identification of goods and waste, define (or refer back to) how you distinguish between these types of economic flows. Explain multifunctionality decisions and how allocation factors were calculated. Include rationale, data sources, and refer to related sensitivity analyses.]}
+
+\subsection{Recycling}
+\placeholder{[Describe how you handled recycling (open-loop/closed-loop, mass balance, allocation, ...) in your foreground system.]}
+
+\subsection{Results of inventory analysis}
+\guidance{Include the full inventory table in Appendix A. In the main text, briefly present 2--3 example flows and discuss their relevance to the LCA study. Highlight any noteworthy results.}
+
+\placeholder{[Briefly discuss 2--3 examples from the inventory analysis. Full inventory table needs to be in Appendix A.]}
+
+\section{Impact Assessment}
+\subsection{Impact categories, characterisation models, indicators, and factors}
+\guidance{Explain which impact assessment families you chose (PEF as baseline; CML or ReCiPe as sensitivity analysis). Briefly describe the characterisation models, indicators, and factors in your own words using correct LCA terminology (see LCA handbook).}
+
+\placeholder{[State which characterisation families you plan to use (PEF as baseline; CML or ReCiPe as sensitivity analysis). Explain the related models, indicators, and factors.]}
+
+\subsection{Classification}
+\placeholder{[Describe how environmental interventions were classified to impact categories.]}
+
+\subsection{Characterisation results and discussion}
+\guidance{Present characterisation results for all 4 impact categories for both alternatives. If presented in a table, use a consistent scientific number format. If presented in graphs (bar charts or similar), follow good data visualization practise and include captions.}
+
+\placeholder{[Present and discuss characterisation results.]}
+
+\subsection{Normalisation results and discussion}
+\placeholder{[Present and discuss normalisation results. Show understanding of the normalisation step.]}
+
+\subsection{Interventions lacking characterisation factors}
+\guidance{Briefly present 2--3 interesting examples and discuss their relevance to your LCA case study. Include the complete list in Appendix B.}
+
+\placeholder{[Briefly present 2--3 interventions for which characterisation factors are lacking. Full list in Appendix B.]}
+
+\subsection{Economic flows not followed to the system boundary}
+\placeholder{[Describe any economic flows that were not followed to the system boundary and justify this decision. Have a look at the FAQ (see Brightspace) if you are unsure about what is meant here.]}
+
+\section{Interpretation}
+\subsection{Consistency check}
+\guidance{List and discuss factors influencing consistency across alternatives: differences in data sources, accuracy, geography/technology/time-related coverage, ... Focus on whether the methodological choices made in goal and scope are consistently applied throughout the study.}
+
+\placeholder{[Describe the consistency check and outcomes. You can use a table if you want to (include the caption).]}
+
+\subsection{Completeness check}
+\guidance{List and discuss factors influencing completeness of each alternatives: differences in completeness between alternatives, missing characterisation factors, ... Evaluate this based on expert judgement and comparison with other studies. Focus on whether all relevant information and data needed to address the goal and scope are available and complete.}
+
+\placeholder{[Describe the completeness check and outcomes. You can use a table if you want to (include the caption).]}
+
+\subsection{Contribution analyses}
+\guidance{Report (1) direct process contributions and (2) environmental flow contributions for ≥ 4 impact categories. Include graphs (and captions). Provide argumentation for choice of impact categories. Specify how each contribution analysis was conducted (referring to relevant appendices). Discuss the implications of these contribution analyses for your study.\par
+If you have done the optional life cycle stage contribution analysis, please attach it as an appendix so that it does not count towards the word count. However, consider its results for your discussion.}
+
+\placeholder{[Present and discuss contribution analysis type 1 (direct process contributions).]}
+
+\placeholderit{[Insert contribution analysis figure(s)]}
+
+\placeholder{[Present and discuss contribution analysis type 2 (environmental flow contributions).]}
+
+\placeholderit{[Insert contribution analysis figure(s)]}
+
+\subsection{Sensitivity analyses}
+\guidance{Report a sensitivity analysis for (1) allocation method, (2) impact assessment family, and (3) free choice. For each, describe what was varied, present results, and discuss implications.}
+
+\subsubsection{Sensitivity analysis 1: Allocation}
+\placeholder{[Describe the allocation sensitivity analysis and discuss the results.]}
+
+\subsubsection{Sensitivity analysis 2: Characterisation family}
+\placeholder{[Describe the characterisation family sensitivity analysis and discuss the results.]}
+
+\subsubsection{Sensitivity analysis 3: [Free choice]}
+\placeholder{[Describe your free-choice sensitivity analysis and discuss the results.]}
+
+\section{Discussion}
+\guidance{Discuss the main findings in the context of existing literature. Address limitations of the study, methodological choices, data uncertainty, and what these mean for the conclusions.}
+
+\placeholder{[Write your discussion here.]}
+
+\section{Conclusions and Recommendations}
+\guidance{Provide a direct answer to your research question(s). Formulate recommendations for future research or product improvement. Keep concise and grounded in your results.}
+
+\placeholder{[Write your conclusions here.]}
+
+\placeholder{[Write your recommendations here.]}
+
+\newpage
+\section{References}
+\guidance{Use a consistent reference style throughout. Include at least 5 references (≥ 2 LCA studies on your topic). Support all claims with references. Use a reference manager (e.g., \href{https://brightspace.universiteitleiden.nl/d2l/le/lessons/27150/topics/361360}{Mendeley} or \href{https://brightspace.universiteitleiden.nl/d2l/le/lessons/27150/topics/1980501}{Zotero}).}
+
+\printbibliography[heading=none]
+
+\newpage
+\begin{appendices}
+\usection{Appendices / Supporting Information}
+\guidance{The appendices support the main text with detailed data. All critical information must be in the main text. Appendices A, B and C are mandatory.}
+
+\subsection{Inventory Table}\label{app:inventory}
+\guidance{Include the full Life Cycle Inventory (LCI) results table for both alternatives in the Excel appendix file. Show all environmental flows and their quantities.}
+
+\placeholderit{[Refer to the name of the respective Excel sheet here.]}
+
+\subsection{Interventions lacking characterisation factors}\label{app:missing-cfs}
+\guidance{Add a list of all environmental flows for which no characterisation factors were available, with reference to the impact categories they could not be assigned to, in the Excel appendix file.}
+
+\placeholderit{[Refer to the name of the respective Excel sheet here.]}
+
+\subsection{Unit Process Reports (UPR)}\label{app:upr}
+\guidance{Use the mandatory UPR template (available on Brightspace) to present data for all foreground unit processes. Clearly document how you went from raw data to openLCA inputs, including all assumptions, calculations, and sources. Each unit process can be included below, or Appendix C can be shared in the same Excel file as Appendices A and B.}
+
+\placeholderit{[Insert UPR for foreground process 1]}
+
+\placeholderit{[Insert UPR for foreground process 2]}
+
+\placeholderit{[Continue for all foreground processes...]}
+
+\placeholderit{OR}
+
+\placeholderit{[Refer to the name of the respective Excel sheet here.]}
+
+\subsection{[Additional appendix -- optional]}
+\guidance{Add any other supporting information here (e.g. calculations which did not fit in the UPR template, additional contribution analyses by life cycle phase, uncertainty analysis, additional sensitivity analyses).}
+
+\placeholderit{[Optional additional appendix content]}
+
+\subsection{[Continue as needed]}
+\placeholderit{[Optional additional appendix content]}
+
+\end{appendices}
+
+\end{document}

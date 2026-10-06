@@ -1,0 +1,155 @@
+# Rules for texwc.py: counting words in a LaTeX document the way
+# LibreOffice Writer / MS Word count the equivalent .docx.
+#
+# Iterate with:   python3 texwc.py diff      (tex vs reference docx, token level)
+#                 python3 texwc.py probe "2026–2027" "a / b"   (LibreOffice vs our tokenizer)
+
+# External programs. "auto" detects the OS; "" uses the default location for that OS:
+#   linux:   soffice on PATH,                       /usr/bin/python3 (with python3-uno)
+#   windows: C:\Program Files\LibreOffice\program\soffice.exe and ...\program\python.exe
+#   macos:   /Applications/LibreOffice.app/Contents/MacOS/soffice and .../Resources/python
+# Check with:  python texwc.py setup
+[system]
+platform = "auto"     # "auto" | "linux" | "windows" | "macos"
+pandoc = ""           # "" = pandoc on PATH, or a full path
+soffice = ""          # LibreOffice (only for calibrate / probe)
+lo_python = ""        # a Python that can `import uno` (LibreOffice's own on Windows/macOS)
+
+[input]
+tex = "example/main.tex"         # paths are relative to this config file
+bib = ""                         # "" = the file(s) named by \\addbibresource / \\bibliography in the tex
+csl = "csl/apa.csl"              # any CSL style file; https://github.com/citation-style-language/styles
+reference_docx = "example/LCA_PR.docx"   # benchmark for `diff` / `calibrate`
+locale = "en-US"                 # CSL locale
+
+# ---------------------------------------------------------------------------
+# Tokenizer: how a stream of text is split into counted words.
+# Verified against LibreOffice 25.8 with `texwc.py probe`:
+#   * every Unicode whitespace (incl. no-break / thin spaces) separates words, zero-width space does not
+#   * en dash and em dash also separate words and are never words themselves
+#   * every other non-empty token counts, also lone symbols like • ℹ / & ≥ . 🡪
+# ---------------------------------------------------------------------------
+[tokenizer]
+mode = "libreoffice"             # "libreoffice" | "word"
+
+[tokenizer.libreoffice]
+extra_separators = "–—"          # LibreOffice: Options > Writer > General > Additional separators
+count_symbol_only_tokens = true  # count tokens without letters/digits ("•", "&", "/")
+ignore_tokens = []               # regexes for tokens that never count (full match)
+exclude_kinds = []               # LibreOffice counts header/footer text (each variant once)
+
+[tokenizer.word]
+# MS Word: not verified here (Word is not available) - supply Word's numbers and tune.
+extra_separators = ""
+count_symbol_only_tokens = true
+ignore_tokens = []
+exclude_kinds = ["header"]       # Word's status bar count ignores headers/footers
+
+# ---------------------------------------------------------------------------
+# What is counted. Every extracted text block has a kind:
+#   heading, para, table, caption, guidance, toc, bibliography, footnote, header
+# The same filter is applied to the tex and the docx side.
+# ---------------------------------------------------------------------------
+[count]
+kinds = ["heading", "para", "table", "caption", "guidance", "toc", "bibliography", "footnote", "header"]
+exclude_sections = []            # regexes on heading titles; excludes that section and its subsections
+                                 # e.g. ["^Appendices", "References$"]
+stop_at_heading = "References"             # regex; count only the text before the first heading matching it
+                                 # (full match, heading number ignored), e.g. "References"
+                                 # page headers/footers are not affected (see kinds / exclude_kinds)
+
+# ---------------------------------------------------------------------------
+# LaTeX side
+# ---------------------------------------------------------------------------
+[tex]
+follow_inputs = true             # inline \input / \include files
+date_format = "%B %-d, %Y"       # \today (LaTeX default: October 6, 2026)
+math = "one"                     # inline/display math: "one" = 1 word, "skip" = 0, "tex" = count raw TeX
+drop_environments = ["comment"]  # removed with their content
+
+# Headings: the docx has literal numbers like "1. Introduction", "2.1 Goal definition".
+# {n} = dotted number, {title} = heading text. Index 0 = \section, 1 = \subsection, ...
+heading_levels = ["section", "subsection", "subsubsection", "paragraph", "subparagraph"]
+heading_format = ["{n}. {title}", "{n} {title}", "{n} {title}", "{n} {title}", "{n} {title}"]
+appendix_letters = true          # after \appendix top-level numbers become A, B, ...
+appendix_level = 1               # heading level that gets the letters (1 = \subsection: appendices sit under an unnumbered \section*)
+appendix_heading_format = ["{n}. {title}", "Appendix {n}: {title}", "{n} {title}", "{n} {title}", "{n} {title}"]
+
+[tex.captions]
+figure = "Figure {n}: {caption}"
+table = "Table {n}: {caption}"
+
+[tex.refs]
+ref = "{n}"
+pageref = "0"
+autoref_names = { figure = "Figure", table = "Table", section = "Section", subsection = "Section", subsubsection = "Section", appendix = "Appendix" }
+
+[tex.toc]
+generate = true                  # expand \tableofcontents into its entries (Word counts the TOC field text)
+title = ""                       # "" = take \contentsname from the preamble, else "Contents"
+depth = 3                        # default; \setcounter{tocdepth}{n} in the preamble overrides
+entry_format = "{title} {page}"  # docx TOC lines look like "2.1 Goal definition 7"
+page = "0"                       # the page number only needs to be one token
+
+# Page header/footer text from fancyhdr (\fancyhead, \fancyfoot, \lhead ...), counted as kind "header".
+# LibreOffice counts each header/footer variant of the docx once; LCA_PR.docx has two
+# (default + even page), so the same text is counted twice.
+[tex.headers]
+include = true
+copies = 2
+page = "0"                       # \thepage
+
+[tex.bibliography]
+mode = "render"                  # "render" = citeproc output at \printbibliography, "drop"
+title = "References"             # heading printed by \printbibliography without heading=none
+
+# Regex replacements on the extracted text, optionally limited to some kinds.
+# Zotero/Word (citeproc-js) drops the space in "assessment : detailed" before a subtitle colon;
+# pandoc's citeproc and biblatex keep it.
+[[tex.replacements]]
+kinds = ["bibliography"]
+pattern = '\s+:(?=\s)'
+replace = ":"
+
+# Tables: these environments are flattened into one paragraph per cell.
+# value = number of mandatory arguments after \begin{env} (column spec etc.)
+[tex.tables]
+tblr = 1
+longtblr = 1
+talltblr = 1
+tabular = 1
+"tabular*" = 2
+tabularx = 2
+tabulary = 2
+longtable = 1
+table_rules = ["hline", "toprule", "midrule", "bottomrule", "cline", "cmidrule", "hhline", "SetCell", "SetRow", "SetHline", "SetVline", "addlinespace"]
+
+# Macro expansions, applied before pandoc reads the document.
+#   "template"                   -> #1, #2 ... are the arguments
+#   { args = n, template = "" }  -> explicit argument count (needed when the template drops them)
+# Built from the \newcommand definitions in main.tex: what matters is the visible text.
+[tex.macros]
+placeholder = "#1"
+placeholderit = "#1"
+infoicon = "ℹ"
+guidance = "\\begin{wcguidance}ℹ #1\\end{wcguidance}"
+usection = "\\section*{#1}\\addcontentsline{toc}{section}{#1}"
+usubsection = "\\subsection*{#1}\\addcontentsline{toc}{subsection}{#1}"
+textbullet = "•"
+phantomsection = ""
+FloatBarrier = ""
+sethlcolor = { args = 1, template = "" }
+afterpage = "#1"
+hl = "#1"
+
+# ---------------------------------------------------------------------------
+# docx side (reference document)
+# ---------------------------------------------------------------------------
+[docx]
+heading_style = "^Heading(\\d)$"                 # style id regex, group 1 = level
+toc_style = "^(TOC\\d+|TOCHeading|Contents\\d+|ContentsHeading)$"
+caption_style = "^Caption$"
+bibliography_style = "^Bibliography"
+guidance_fills = ["F0F4FA"]                      # paragraph shading of the blue guidance boxes
+skip_hidden = true                               # runs formatted as hidden (w:vanish)
+symbol_map = { "Wingdings:F0E0" = "🡪" }          # w:sym font:char -> text
