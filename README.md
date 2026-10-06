@@ -91,9 +91,10 @@ lo_python = ""        # e.g. 'D:\LibreOffice\program\python.exe'
 The config points at the example in `example/`. It counts the text before the "References" heading (`stop_at_heading` in `wordcount.toml`):
 
 ```bash
-python3 texwc.py count                     # → 1947 words  (example/main.tex, tokenizer: libreoffice)
+python3 texwc.py count                     # → 1923 words  (example/main.tex, tokenizer: word)
 python3 texwc.py count -s --depth 1        # words per top-level section
-python3 texwc.py --until "" count          # the whole document → 2316 words
+python3 texwc.py --until "" count          # the whole document → 2292 words
+python3 texwc.py --mode libreoffice count   # LibreOffice count (adds header/footer text) → 1947 words
 python3 texwc.py diff                      # check against example/LCA_PR.docx
 ```
 
@@ -128,7 +129,7 @@ Global options (put them before the command):
 | `--bib FILE` | The bibliography (overrides `[input] bib`; default: taken from the tex) |
 | `--until HEADING` | Count only the text before that heading (a regex; the heading number is ignored; `""` = everything) |
 | `--csl FILE` | Use a different citation style |
-| `--mode word` | Use the MS Word tokenizer (not yet verified against Word) |
+| `--mode libreoffice` | Use the LibreOffice tokenizer, which also counts header/footer text (default: `word`, verified against Word on the web) |
 | `--config FILE` | Use a different config file |
 
 ## Counting rules worth knowing
@@ -137,6 +138,8 @@ These rules were verified against LibreOffice 25.8:
 - LibreOffice treats en and em dashes as spaces, so `2026–2027` is 2 words.
 - Every other piece of text between spaces counts as a word, including `•`, `/`, `&` and `ℹ`.
 - LibreOffice counts header and footer text, once per header/footer variant. Word does not.
+
+Checked against Word on the web with `example/LCA_PR.docx`: Word gives 2292 words for the whole document and 1923 for the text before "References" (the default `word` mode gives the same). Word counts exactly like LibreOffice, except that it leaves out the headers and footers. Its en dashes also separate words.
 - Heading numbers, caption labels (`Figure 1:`) and the table of contents all count, because they are literal text in a `.docx`.
 
 # Author

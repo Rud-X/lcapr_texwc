@@ -20,6 +20,7 @@ tex = "example/main.tex"         # paths are relative to this config file
 bib = ""                         # "" = the file(s) named by \\addbibresource / \\bibliography in the tex
 csl = "csl/apa.csl"              # any CSL style file; https://github.com/citation-style-language/styles
 reference_docx = "example/LCA_PR.docx"   # benchmark for `diff` / `calibrate`
+word_reference_count = 2292     # MS Word (on the web) count of the whole reference_docx; compare with `--until "" calibrate`
 locale = "en-US"                 # CSL locale
 
 # ---------------------------------------------------------------------------
@@ -30,7 +31,7 @@ locale = "en-US"                 # CSL locale
 #   * every other non-empty token counts, also lone symbols like • ℹ / & ≥ . 🡪
 # ---------------------------------------------------------------------------
 [tokenizer]
-mode = "libreoffice"             # "libreoffice" | "word"
+mode = "word"                    # "libreoffice" | "word"
 
 [tokenizer.libreoffice]
 extra_separators = "–—"          # LibreOffice: Options > Writer > General > Additional separators
@@ -39,8 +40,10 @@ ignore_tokens = []               # regexes for tokens that never count (full mat
 exclude_kinds = []               # LibreOffice counts header/footer text (each variant once)
 
 [tokenizer.word]
-# MS Word: not verified here (Word is not available) - supply Word's numbers and tune.
-extra_separators = ""
+# Verified against Word on the web (Oct 2026) with example/LCA_PR.docx: 2292 words in total,
+# 1923 for the text before "References". Like LibreOffice, the en dash separates words and is
+# never a word itself ("2026–2027" = 2, a lone "–" = 0). The em dash is assumed to behave the same (not in the example).
+extra_separators = "–—"
 count_symbol_only_tokens = true
 ignore_tokens = []
 exclude_kinds = ["header"]       # Word's status bar count ignores headers/footers
